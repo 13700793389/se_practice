@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="src/common/layui/css/layui.css" />
+<title>Insert title here</title>
+
+</head>
+<style>
+	*{
+		box-sizing: border-box;
+	}
+	#mainbody {
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	#panel-top {
+		background-color: #f2f2f2;
+		margin-top: 10px;
+		border: 2px solid;
+		border-radius: 5px;
+		height: 50px;
+		width: 100%;
+	}
+</style>
+<body>
+	<script type="text/html" id="DegTpl">
+  {{#  if(d.course_isdegree ==1 ){ }}
+    <span style="color: #F581B1;"> 是 </span>
+  {{#  } else { }}
+     否
+  {{#  } }}
+	</script>
+	<div id="mainbody">
+		<div class="layui-fluid">
+			<div class="layui-row">
+				<div id="panel-top">
+					<div style="text-align: center; line-height: 50px;">
+						<h2>已选课程</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table class="layui-hide" id="table1" lay-filter="table1"></table>
+	</div>
+	<script type="text/javascript" src="src/common/layui/layui.js" ></script>
+	<script type="text/javascript" src="src/common/lib/jquery-1.9.0.min.js" ></script>
+	<script>
+		layui.use(['table'], function() {
+			var table = layui.table;
+			table.render({
+				elem : '#table1',
+				url : 'getmycourselist',
+				title : '已选课程',
+				cols : [[
+				   {type:'numbers', totalRowText: '合计'}
+			      ,{field:'course_id', title:'课程ID', unresize: true, sort: true}
+			      ,{field:'course_name', title:'课程名'}
+			      ,{field:'course_isdegree', title:'学位课', templet: '#DegTpl'}
+			      ,{field:'course_credit', title:'学分', totalRow: true}
+			    ]],
+				response : {
+					statusCode : 200
+					//重新规定成功的状态码为 200，table 组件默认为 0
+				},
+				parseData: function(res){ //res 即为原始返回的数据
+					    return {
+					      "code": res[0].status, //解析接口状态
+					      "msg": res[0].message, //解析提示文本
+					      "count": res[0].total, //解析数据长度
+					      "data": res[0].rows //解析数据列表
+					    };
+				}
+				,even : true
+			});
+		});
+	</script>
+</body>
+
+</html>
