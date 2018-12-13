@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+		<link rel="stylesheet" href="src/common/layui/css/layui.css" />
+		<title>选课</title>
+	<style>
+		*{
+			box-sizing: border-box;
+		}
+		#mainbody{
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto ;
+		}
+		#panel-top{
+			background-color: #f2f2f2;
+			margin-top: 10px;
+			border: 2px solid;
+			border-radius: 5px;
+			height: 50px;
+			width: 100%;
+		}
+		#detail:hover { background-color:yellow; }
+	</style>
+
+	</head>
+
+	<body>
+		<script type="text/html" id="switchTpl">
+  		{{#  if(d.course_isdegree == 1){ }}
+		<input type="checkbox" lay-filter="degree" value="{{d.course_id}}" name="学位课" lay-skin="switch" lay-text="是|否">
+  		{{#  } else { }}
+    	<input type="checkbox" value="{{d.course_id}}" lay-skin="switch" disabled>
+  		{{#  } }}
+		</script>
+		<script type="text/html" id="detailTpl">
+			<u id="detail" onclick="displaydetail({{d.course_id}})" style="color: #0066CC;"><u>{{ d.course_name }}</i></a>
+		</script>
+		<div id="mainbody">
+				<div class="layui-fluid">
+					<div class="layui-row">
+						<div id="panel-top">
+							<div class="layui-col-md2" style="text-align: center; line-height: 50px;">
+								<h2>2018秋季选课</h2>
+							</div>
+							
+							<form class="layui-form">
+							<div class="layui-col-md3">
+									<div class="layui-form-item" style="padding: 5px;">
+										<label class="layui-form-label">院系</label>
+									    <div class="layui-input-block">
+									      <select name="department" lay-verify="required">
+									        <option value=""></option>
+									        <option value="数学学院">数学学院</option>
+									        <option value="物理学院">物理学院</option>
+									        <option value="计算机学院">计算机学院</option>
+									        <option value="人工智能学院">人工智能学院</option>
+									        <option value="网络空间安全学院">网络空间安全学院</option>
+									      </select>
+										</div>
+									</div>
+							</div>
+							<div class="layui-col-md3">
+								<div class="layui-form-item" style="padding: 5px;">
+									<label class="layui-form-label">筛选框</label>
+									<div class="layui-input-block">
+										<input type="text" name="conditions" placeholder="请输入筛选条件" autocomplete="off" class="layui-input">
+									</div>
+								</div>
+							</div>
+							<div class="layui-col-md4">
+								<div class="layui-form-item" style="padding: 5px;">
+									<div class="layui-input-block">
+										<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+										<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+									</div>
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+				<table class="layui-hide" id="test" lay-filter="test"></table>
+		</div>
+	<script type="text/javascript" src="src/common/layui/layui.js" ></script>
+	<script type="text/javascript" src="src/common/lib/jquery-1.9.0.min.js" ></script>
+	<script type="text/html" id="toolbarDemo">
+  	<div class="layui-btn-container">
+    	<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe608;</i>添加</button>
+  	</div>
+	</script>
+	<script>
+		layui.use(['form','table'], function() {
+			var form = layui.form;
+			var table = layui.table;
+	
+			//监听提交
+			form.on('submit(formDemo)', function(data) {
+				table.reload('test', {
+					  url: 'getcourselist?department=' + data.field.department + '&conditions=' + data.field.conditions
+					  ,method: 'post'
+				});
+				//layer.msg(JSON.stringify(data.field));
+				return false;
+			});
+			form.on('switch(degree)', function(obj){
+				layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+			});
+			table.render({
+				elem : '#test',
+				toolbar: '#toolbarDemo',
+				url : 'getcourselist',
+				title : '用户数据表',
+				method : 'post',
+				cols : [[
+				   {type:'numbers'}
+				  ,{type:'radio'}
+				  ,{field:'course_isdegree', title:'学位课', width:85, templet: '#switchTpl', unresize: true}
+			      ,{field:'course_id', title:'ID'}
+			      ,{field:'course_name', title:'课程名', templet: '#detailTpl'}
+			      ,{field:'course_period', title:'课时'}
+			      ,{field:'course_credit', title:'学分'}
+			      ,{field:'course_character', title:'课程性质'}
+			      ,{field:'course_limitselection', title:'限选人数'}
+			      ,{field:'course_haveselection', title:'已选人数'}
+			      ,{field:'course_department', title:'开设院系'}
+			      ,{field:'course_teacher', title:'主讲老师'}
+			      
+			    ]],
+			    even : true,
+				page : true,
+				response : {
+					statusCode : 200
+					//重新规定成功的状态码为 200，table 组件默认为 0
+				},
+				parseData: function(res){ //res 即为原始返回的数据
+					    return {
+					      "code": res[0].status, //解析接口状态
+					      "msg": res[0].message, //解析提示文本
+					      "count": res[0].total, //解析数据长度
+					      "data": res[0].rows //解析数据列表
+					    };
+				}
+			});
+			//监听事件
+			table.on('toolbar(test)', function(obj){
+			  //var checkStatus = table.checkStatus(obj.config.id);
+			  var checkStatus = table.checkStatus('test'); //test即为基础参数id对应的值
+			  
+			  switch(obj.event){
+			    case 'add':
+			      //layer.msg('添加');
+			      
+			      var courseid = checkStatus.data[0]["course_id"];
+			      var isdegree = $("input[value="+ courseid +"]")[0].checked;
+	                $.ajax({
+	                    url: 'addcourse',
+	                    data: {"courseid":courseid, "isdegree":isdegree},
+	                    dataType: 'text',//预期得到的数据类型
+	                    type: 'post',
+	                    success:function (data) {
+	                        if (data == 0){
+	                        	layer.msg('请先登录!');
+	                        }else if(data == 1){
+	                            layer.msg('添加成功!');
+	                        }else if(data == 2){
+	                        	layer.msg('已添加过该课程,请勿重复操作！');
+	                        }else{
+	                        	layer.msg('出错了!');
+	                        }
+	                    }
+	                })
+			    break;
+			  };
+			});
+		});
+	</script>
+	<script>
+	function displaydetail(obj){
+        $.ajax({
+            url: 'showcoursedetail',
+            data: {"courseid":obj},
+            dataType: 'json',//预期得到的数据类型
+            type: 'post',
+            success:function (data) {
+            	layer.open({
+            		title: data[0].rows[0]["course_name"],
+            		type: 0, 
+            		content: '<p style="color : #01AAED">节次：</p>' + data[0].rows[0]["course_section"] + '</br>'
+            		+ '<p style="color : #01AAED">开课时间：</p>' + data[0].rows[0]["course_week"] + '</br>'
+            		+ '<p style="color : #01AAED">上课地点：</p>' + data[0].rows[0]["course_site"] + '</br>'
+            		+ '<p style="color : #01AAED">课程要求：</p>' + data[0].rows[0]["course_require"] + '</br>'
+            		+ '<p style="color : #01AAED">考核方式：</p>' + data[0].rows[0]["course_examination"] + '</br>'
+            		+ '<p style="color : #01AAED">课程大纲：</p>' + data[0].rows[0]["course_outline"]
+            	});
+            }
+        })
+	}
+	</script>
+	</body>
+</html>
