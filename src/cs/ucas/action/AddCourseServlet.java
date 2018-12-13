@@ -48,5 +48,4 @@ public class AddCourseServlet extends HttpServlet{
 		}
 		resp.getWriter().print(flag);
 	}
-
 }

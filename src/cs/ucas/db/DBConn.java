@@ -14,9 +14,9 @@ public class DBConn {
 	private Connection conn;
 	public Connection getConn() throws Exception {
 		dbDriver="com.mysql.cj.jdbc.Driver";
-		url="jdbc:mysql://127.0.0.1:3306/scsys?useSSL=false&serverTimezone=GMT%2B8";
-		user="root";
-		passWord="root";
+		url="jdbc:mysql://xefi550t7t6tjn36.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/btl9rfhq64v81frm?useSSL=false&serverTimezone=GMT%2B8";
+		user="eiqhs5i9s0walyqp";
+		passWord="jro1pouhgy930a1p";
 		Class.forName(dbDriver);
 		conn = DriverManager.getConnection(url, user, passWord);
 		return conn;
