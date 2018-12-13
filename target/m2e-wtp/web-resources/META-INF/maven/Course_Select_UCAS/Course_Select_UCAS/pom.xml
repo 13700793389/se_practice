@@ -84,6 +84,7 @@
             <artifactId>maven-war-plugin</artifactId>
             <version>2.4</version>
             <configuration>
+            	<warName>Course_Select_UCAS</warName>
                 <webResources>
                     <resource>
                         <directory>WebContent</directory>
