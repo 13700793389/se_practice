@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="src/common/layui/css/layui.css" />
-<title>Insert title here</title>
+<title>管理员页</title>
 </head>
 <style>
 	*{
@@ -28,7 +28,25 @@
 			    <li>发布公告</li>
   			</ul>
 	  		<div class="layui-tab-content">
-			    <div class="layui-tab-item layui-show">内容1</div>
+			    <div class="layui-tab-item layui-show">
+					<form class="layui-form layui-form-pane" action="">
+  							<div>
+	    						<label class="layui-form-label">选课开关</label>
+	    						<div class="layui-input-inline" style="width: 300px;">
+	      						<select name="timetable">
+							        <option value="0">关闭</option>
+							        <option value="1">开启</option>
+	      						</select>
+	      						</div>
+    						</div>
+						<div class="layui-form-item" style="margin-top: 10px">
+    						<div class="layui-input-block">
+      							<button class="layui-btn" lay-submit lay-filter="sub3">立即提交</button>
+      							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    				  		</div>
+  					  	</div>
+					</form>
+				</div>
 			    <div class="layui-tab-item">
 			    	<form class="layui-form layui-form-pane" action="">
 			    		 <div class="layui-form-item">
@@ -257,7 +275,21 @@
 	             })
 	             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 		});
+		  form.on('submit(sub3)', function(data){
+			  
+				 var timetable_switch = data.field["timetable"];;
+	          $.ajax({
+	         	 url: 'updatetimetable',
+	         	 data:{"switch":timetable_switch},
+	              dataType: 'text',//预期得到的数据类型
+	              type: 'post',
+	              success:function (data) {
+	            	  layer.msg("更改成功");
+	              }
+	          })
+	          return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 		});
+	});
 	</script>
 </body>
 </html>

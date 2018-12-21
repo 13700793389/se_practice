@@ -5,7 +5,7 @@
   <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="src/common/layui/css/layui.css" />
-    <title>登录</title>
+    <title>首页</title>
 	
 	<link rel="stylesheet" href="src/common/css/sccl.css">
 	<link rel="stylesheet" type="text/css" href="src/common/skin/qingxin/skin.css" id="layout-skin"/>

@@ -6,16 +6,21 @@ public class Student {
 	private String stu_password;
 	private String stu_name;
 	private String stu_institution;
+	private int student_master;
+	private int student_status;
 	public Student() {
 		
 	}
-	public Student(int stu_id, String stu_username, String stu_password, String stu_name,
-			String stu_institution) {
+	public Student(int stu_id, String stu_username, String stu_password, String stu_name, String stu_institution,
+			int student_master, int student_status) {
+		super();
 		this.stu_id = stu_id;
 		this.stu_username = stu_username;
 		this.stu_password = stu_password;
 		this.stu_name = stu_name;
 		this.stu_institution = stu_institution;
+		this.student_master = student_master;
+		this.student_status = student_status;
 	}
 	public int getStu_id() {
 		return stu_id;
@@ -47,9 +52,22 @@ public class Student {
 	public void setStu_institution(String stu_institution) {
 		this.stu_institution = stu_institution;
 	}
-	@Override
-	public String toString() {
-		return "StudentDAOImpl [stu_id=" + stu_id + ", stu_username=" + stu_username + ", stu_password=" + stu_password
-				+ ", stu_name=" + stu_name + ", stu_institution=" + stu_institution + "]";
+
+	public int getStudent_master() {
+		return student_master;
 	}
+
+	public void setStudent_master(int student_master) {
+		this.student_master = student_master;
+	}
+
+	public int getStudent_status() {
+		return student_status;
+	}
+
+	public void setStudent_status(int student_status) {
+		this.student_status = student_status;
+	}
+
+
 }

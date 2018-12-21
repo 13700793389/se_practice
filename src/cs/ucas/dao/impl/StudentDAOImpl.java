@@ -88,6 +88,53 @@ public class StudentDAOImpl implements StudentDAO{
 		}
 		return institution;
 	}
-	
-	
+
+	@Override
+	public int checkUserStatus(String username) {
+		DBConn jdbc = new DBConn();
+		int num = 0;
+		String sql = "select * from student where student_username=?";
+		try {
+			ResultSet res = jdbc.do_Query(sql, new Object[]{username});
+			if(res.next()) {
+				num = res.getInt("student_status");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.do_close();
+		}
+		return num;
+	}
+
+	@Override
+	public int getUidByUserName(String username) {
+		DBConn jdbc = new DBConn();
+		int uid = 0;
+		String sql = "select * from student where student_username=?";
+		try {
+			ResultSet res = jdbc.do_Query(sql, new Object[]{username});
+			if(res.next()) {
+				uid = res.getInt("student_id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.do_close();
+		}
+		return uid;
+	}
+
+	@Override
+	public void activeUserById(int id) {
+		DBConn jdbc = new DBConn();
+		String sql = "update student set student_status=? where student_id=?";
+		try {
+			jdbc.do_Update(sql, new Object[]{1,id});
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.do_close();
+		}
+	}
 }

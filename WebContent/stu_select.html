@@ -89,8 +89,8 @@
 	<script type="text/javascript" src="src/common/lib/jquery-1.9.0.min.js" ></script>
 	<script type="text/html" id="toolbarDemo">
   	<div class="layui-btn-container">
-    	<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe608;</i>添加</button>
-  	</div>
+		<button id="addBtn" class="layui-btn layui-btn-normal" lay-event="add"><i class="layui-icon">&#xe608;</i>添加</button>
+	</div>
 	</script>
 	<script>
 		layui.use(['form','table'], function() {
@@ -127,8 +127,7 @@
 			      ,{field:'course_limitselection', title:'限选人数'}
 			      ,{field:'course_haveselection', title:'已选人数'}
 			      ,{field:'course_department', title:'开设院系'}
-			      ,{field:'course_teacher', title:'主讲老师'}
-			      
+			      ,{field:'course_teacher', title:'主讲老师'} 
 			    ]],
 			    even : true,
 				page : true,
@@ -143,17 +142,27 @@
 					      "count": res[0].total, //解析数据长度
 					      "data": res[0].rows //解析数据列表
 					    };
+				},
+				done: function(){
+					 $.ajax({
+				            url: 'initselect',
+				            dataType: 'text',//预期得到的数据类型
+				            type: 'post',
+				            success:function (data) {
+				            	console.log(data);
+				            	if(data==0){
+				            		$("#addBtn").attr("class","layui-btn layui-btn-disabled");
+				            	}
+				            }
+				        })
 				}
 			});
 			//监听事件
 			table.on('toolbar(test)', function(obj){
 			  //var checkStatus = table.checkStatus(obj.config.id);
 			  var checkStatus = table.checkStatus('test'); //test即为基础参数id对应的值
-			  
 			  switch(obj.event){
 			    case 'add':
-			      //layer.msg('添加');
-			      
 			      var courseid = checkStatus.data[0]["course_id"];
 			      var isdegree = $("input[value="+ courseid +"]")[0].checked;
 	                $.ajax({

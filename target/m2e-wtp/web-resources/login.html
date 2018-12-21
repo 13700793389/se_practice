@@ -2,7 +2,7 @@
 <html>
   <head>
 	<meta charset="utf-8">
-    <title>首页</title>
+    <title>登录</title>
 	
 	<link rel="stylesheet" href="src/common/layui/css/layui.css">
 	<link rel="stylesheet" href="src/common/css/sccl.css">
@@ -73,8 +73,12 @@
                 	//console.log(data);
                     if (data == 1){
                         location.href = "stu_index.jsp";
+                    }else if(data == 2){
+                    	layer.msg('已将邮件发送至您的邮箱,请先激活');
+                    }else if(data == 3){
+                    	location.href = "admin_index.jsp";
                     }else{
-                        layer.msg('登录名或密码错误');
+                    	layer.msg('登录名或密码错误');
                     }
                 }
             })
