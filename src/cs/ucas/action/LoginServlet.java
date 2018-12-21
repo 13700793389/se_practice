@@ -106,7 +106,7 @@ public class LoginServlet extends HttpServlet{
 		msg.setRecipient(RecipientType.TO, receiveAddress);
 		// 设置邮件标题
 		msg.setSubject("请激活您的账号", "utf-8");
-		msg.setContent("<h1>Active your account</h1><h3><a href='http://localhost:8080/Course_Select_UCAS/activemail?uid=" + id
+		msg.setContent("<h1>Active your account</h1><h3><a href='https://ucassepractice.herokuapp.com/activemail?uid=" + id
 				+ "'>_Active_</a></h3>", "text/html;chraset=utf-8");
 		// 设置显示的发件时间
 		msg.setSentDate(new Date());
