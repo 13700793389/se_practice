@@ -1,8 +1,11 @@
 # 本项目
 通过此项目的联系熟悉了MVC架构的原理，数据库编程，常用的设计模式，软件项目的开发过程，以及如何管理项目、进行版本控制以及项目在heroku上的部署和简单的软件测试
 
-[这里查看项目演示](https://ucassepractice.herokuapp.com/)
-BY 李言，曹义魁
+[这里查看项目演示](https://ucassepractice.herokuapp.com/)BY 李言，曹义魁
+
+
+![演示](https://github.com/13700793389/se_practice/blob/master/diplayimg/select.JPG)
+
 ## 说明
 目前使用的库和数据库：
 
@@ -16,7 +19,6 @@ BY 李言，曹义魁
 
 >     java -version
 >     mysql -version
-
 
 项目使用Maven来管理项目中的jar包，同时也方便我们在heroku上的部署
 
@@ -41,6 +43,9 @@ BY 李言，曹义魁
 heroku来部署我们的项目
 - 申请heroku账号，注意需要一张信用卡，因为我们需要为我们的项目add-on一些组件，比如sql数据库
 - 进入个人控制台并create new app，然后在Resources菜单下add-on JawsDB MySQL作为项目的数据库，在JawsDB MySQL中可以看到数据库的连接信息，如主机名，用户名，端口，以及一个数据库名，注意我们在JawsDB MySQL中的权限是受限制的，我们只能在提供的数据库下做数据库操作，而不是自己创建一个新的数据库
+
+![测试](https://github.com/13700793389/se_practice/blob/master/diplayimg/test1.JPG)
+
 - 使用Navicat连接上所给的数据库，并在所给的数据库下面运行sql文件
 在项目文件夹下创建procfile文件，procfile文件是为了方便heroku在部署时识别我们的项目，注意是无格式的，添加以下代码，heroku使用jetty作为运行servlet的容器
 
@@ -52,3 +57,20 @@ heroku来部署我们的项目
 >     heroku logs --app 应用名称 --tail
 
 ## 测试
+
+**覆盖率测试：**
+
+我们使用EclEmma工具结合JUnit来完成覆盖测试，步骤如下：
+
+- 选择Window->Show View->Other->Java->Coverage可以看到代码执行的覆盖率
+
+![测试](https://github.com/13700793389/se_practice/blob/master/diplayimg/dbsetting.JPG)
+
+- 其中可以看到每一个类中代码被执行的百分比也可以看到整个项目代码被执行的百分比
+- 其中检测覆盖率可以用到单元测试中，查看单元测试覆盖率
+
+**REST接口测试：**
+
+我们使用接口测试工具Postman来完成对接口的测试，参考：
+
+- [接口测试工具Postman使用实践](https://blog.csdn.net/duzilonglove/article/details/78645467)
